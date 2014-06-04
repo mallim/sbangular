@@ -1,0 +1,21 @@
+{
+  "name": "sbangular",
+  "version": "0.0.1",
+  "description": "my appfuse clone",
+  "author": "Ian lim",
+  "browserify": {
+    "transform": [
+      "debowerify",
+      "uglifyify"
+    ]
+  },
+  "devDependencies": {
+    "jquery": "^2.1.1",
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^2.1.0",
+    "debowerify": "^0.7.1",
+    "grunt-contrib-less": "^0.11.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "uglifyify": "^2.4.0"
+  }
+}

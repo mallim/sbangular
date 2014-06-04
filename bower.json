@@ -1,0 +1,24 @@
+{
+  "name": "sbangular",
+  "version": "0.0.1",
+  "description": "my appfuse clone",
+  "authors": [
+    "Ian Lim"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "bootstrap": "~3.1.1",
+    "angular": "~1.2.16",
+    "angular-route": "~1.2.16",
+    "angular-ui-router": "~0.2.10",
+    "angular-strap": "~2.0.3"
+  }
+}

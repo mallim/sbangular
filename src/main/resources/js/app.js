@@ -6,9 +6,19 @@ var app = angular.module('sbangularApp', ['ngRoute','mgcrea.ngStrap']);
 
 app.config(['$routeProvider', function($routeProvider){
     $routeProvider
-        .when('/login',{templateUrl:'login.tpl',controller:"LoginCtrl"})
-        .when('/home',{templateUrl:'home.tpl',controller:null})
-        .otherwise({redirectTo: '/login'});
+        .when('/login',{
+            title:'Login',
+            templateUrl:'login.tpl',
+            controller:"LoginCtrl"
+        })
+        .when('/home',{
+            title:'Home',
+            templateUrl:'home.tpl',
+            controller:null
+        })
+        .otherwise({
+            redirectTo: '/login'
+        });
 }]);
 
 app.factory('messageService',[ '$rootScope', function ($rootScope) {
@@ -62,6 +72,12 @@ app.controller('LoginCtrl', ['$scope', '$location', 'messageService',
         $location.path( "/home" );
     }
 
+}]);
+
+app.run(['$location', '$rootScope', function($location, $rootScope) {
+    $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
+        $rootScope.title = current.$$route.title;
+    });
 }]);
 
 

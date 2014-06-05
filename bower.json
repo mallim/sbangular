@@ -19,6 +19,7 @@
     "angular": "~1.2.16",
     "angular-route": "~1.2.16",
     "angular-ui-router": "~0.2.10",
-    "angular-strap": "~2.0.3"
+    "angular-strap": "~2.0.3",
+    "angular-bootstrap": "~0.11.0"
   }
 }

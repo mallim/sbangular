@@ -22,7 +22,7 @@ var app = angular.module('application', [ 'ngRoute','ui.bootstrap']);
 /**
  * Idea from http://ardeibert.com/modularizing-an-angularjs-app-with-browserify/
  */
-require("./Base64Service")(app);
+require("./security/Base64Service")(app);
 require("./AuthenticationService")(app);
 
 app.config(['$routeProvider', '$locationProvider', function( $routeProvider, $locationProvider ){
@@ -67,7 +67,6 @@ app.controller('UserSettingsCtrl', ['$scope',function($scope){
         isFirstDisabled: false
     };
 }]);
-
 
 app.controller('NavCtrl', ['$scope', '$rootScope', "AuthenticationService", "$location", "$http", function( $scope, $rootScope, AuthenticationService, $location, $http )
 {
@@ -116,7 +115,6 @@ app.controller('LoginCtrl', ['$scope', '$location', function($scope, $location)
     }
 
 }]);
-
 
 /**
  * This part will change the html's header title

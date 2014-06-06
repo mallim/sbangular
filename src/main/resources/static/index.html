@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="sbangularApp">
+<html ng-app="application">
 <head>
     <title ng-bind="title + ' | SBAngular'">Welcome to SBAngular</title>
     <link href="css/sbangular.min.css" rel="stylesheet">
@@ -17,10 +17,10 @@
 
     <div class="collapse navbar-collapse" id="navbar">
         <ul class="nav navbar-nav">
-            <li><a ng-show="!role" href="#/login">Login</a></li>
-            <li><a ng-show="role == 'user'" href="#/home">Home</a></li>
-            <li><a ng-show="role == 'user'" href="#/userform">Edit Profile</a></li>
-            <li><a ng-show="role == 'user'" href="#/logout">Logout</a></li>
+            <li><a ng-show="!user" href="#/login">Login</a></li>
+            <li><a ng-show="user" href="#/home">Home</a></li>
+            <li><a ng-show="user" href="#/userform">Edit Profile</a></li>
+            <li><a ng-show="user" data-ng-click="logout()">Logout</a></li>
         </ul>
     </div>
 </div>

@@ -34,7 +34,7 @@ dependencies {
     }
     compile("org.springframework.boot:spring-boot-starter-jetty")
     // compile("org.springframework.boot:spring-boot-starter-data-jpa")
-    // compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.boot:spring-boot-starter-security")
 
     compile("org.apache.commons:commons-lang3:3.3.2")
 
@@ -50,7 +50,6 @@ dependencies {
     testCompile("org.codehaus.groovy:groovy-all:2.2.0")
     testCompile("org.spockframework:spock-core:0.7-groovy-2.0")
     testCompile('org.spockframework:spock-spring:0.7-groovy-2.0')
-    testCompile('com.jayway.restassured:rest-assured:2.3.1')
     testCompile( 'org.springframework:spring-test:3.2.5.RELEASE')
 }
 

@@ -12,6 +12,9 @@ module.exports = function(grunt) {
             ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
         // Task configuration.
     browserify: {
+      options: {
+        watch:true
+      },
       bundleOptions: {
         debug: true
       },

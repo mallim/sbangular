@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <title>Browserify Tests</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="mocha.css" />
+  <script src="bundle.js"></script>
+</head>
+<body>
+<div id="mocha"></div>
+
+<!-- load and configure mocha -->
+<script src="mocha.js"></script>
+<script>
+  'use strict';
+  mocha.setup('bdd')
+  mocha.slow(500)
+  mocha.timeout(3000)
+</script>
+
+<!-- load test suite -->
+<script src="browserified_tests.js"></script>
+
+<!-- kick of tests -->
+<script>
+  if (window.mochaPhantomJS) {
+    window.mochaPhantomJS.run()
+  } else {
+    mocha.run()
+  }
+</script>
+</body>
+</html>

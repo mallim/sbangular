@@ -1,7 +1,7 @@
 'use strict';
 /*jshint -W069 */
 
-var angular = require("angular");
+require("angular");
 require("angular-route");
 require('angular-bootstrap');
 
@@ -23,7 +23,7 @@ var app = angular.module('application', [ 'ngRoute','ui.bootstrap']);
 /**
  * Idea from http://ardeibert.com/modularizing-an-angularjs-app-with-browserify/
  */
-require("./security/Base64Service")(app);
+require("./security/Base64Service").inject(app);
 require("./AuthenticationService")(app);
 
 app.config(['$routeProvider', '$locationProvider', function( $routeProvider, $locationProvider ){

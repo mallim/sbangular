@@ -1,4 +1,5 @@
 'use strict';
+/*jshint bitwise: false*/
 
 module.exports.inject = function( app ) {
   app.service('Base64Service', Base64Service );

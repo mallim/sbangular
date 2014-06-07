@@ -25,6 +25,20 @@ module.exports = function(grunt) {
         files: browserifyFiles,
         bundleOptions: {
           debug: true
+        },
+        options:{
+          watch:true,
+          alias: [ './src/main/resources/js/app.js:' ]
+        }
+      },
+      test:{
+        src: [ 'src/main/resources/js/suite.js' ],
+        dest: './target/browserified_tests.js',
+        bundleOptions: {
+          debug: true
+        },
+        options: {
+          external: [ './src/main/resources/js/app.js' ]
         }
       },
       release: {
@@ -48,9 +62,9 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      validate: {
-        files: ['Gruntfile.js','src/main/resources/js/**/*.js'],
-        tasks: ['jshint']
+      test: {
+        files: ['Gruntfile.js','src/test/resources/**','src/main/resources/js/**/*.js'],
+        tasks: ['test']
       },
       css:{
         files: ['src/main/resources/less/**/*.less'],
@@ -60,9 +74,49 @@ module.exports = function(grunt) {
     jshint: {
       files: ['Gruntfile.js','src/main/resources/js/**/*.js'],
       options: {
-        devel: true,
-        globalstrict: true,
-        node: true
+        jshintrc: '.jshintrc'
+      }
+    },
+    copy: {
+      test: {
+        files: [
+          // includes files within path
+          {expand: true, flatten:true, src: ['src/test/resources/*'], dest: 'target/', filter: 'isFile'},
+
+          // includes files within path and its sub-directories
+          {expand: true, flatten:true, src: ['src/main/resources/static/js/bundle.js'], dest: 'target/'},
+        ]
+      }
+    },
+    clean: {
+      test: ["target"]
+    },
+    connect: {
+      // Used for mocha-phantomjs tests
+      server: {
+        options: {
+          base: 'target'
+        }
+      },
+
+      // you can use this manually by doing
+      // grunt connect:keepalive
+      // to start a server for the example pages (browser/example/*.html) or to
+      // run the tests manually in a browser
+      keepalive: {
+        options: {
+          keepalive: true
+        }
+      }
+    },
+    // run the mocha tests in the browser via PhantomJS
+    'mocha_phantomjs': {
+      test: {
+        options: {
+          urls: [
+            'http://127.0.0.1:8000/test.html'
+          ]
+        }
       }
     }
   });
@@ -71,11 +125,24 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks('grunt-mocha-phantomjs');
 
-  // Default task.
-  grunt.registerTask('validate', ['jshint', 'mocha:dev']);
   grunt.registerTask('release', ['jshint','browserify:release','less:release']);
   grunt.registerTask('dev', ['validate', 'less:dev', 'browserify:dev']);
   grunt.registerTask('dev-no-validate', ['less:dev', 'browserify:dev']);
+
+  // Setup idea from https://blog.codecentric.de/en/2014/02/cross-platform-javascript/
+  grunt.registerTask('test', [
+    'clean:test',
+    'jshint',
+    'browserify:dev',
+    'browserify:test',
+    'copy:test',
+    'connect:server',
+    'mocha_phantomjs'
+  ]);
 
 };

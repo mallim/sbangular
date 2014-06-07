@@ -6,7 +6,7 @@
   "browserify": {
     "transform": [
       "debowerify",
-      "uglifyify"
+      "deamdify"
     ]
   },
   "devDependencies": {
@@ -16,6 +16,15 @@
     "debowerify": "^0.7.1",
     "grunt-contrib-less": "^0.11.0",
     "grunt-contrib-watch": "^0.6.1",
-    "uglifyify": "^2.4.0"
+    "uglifyify": "^2.4.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "deamdify": "^0.1.1",
+    "grunt-mocha-test": "^0.11.0",
+    "mocha": "^1.20.1",
+    "chai": "^1.9.1",
+    "grunt-contrib-copy": "^0.5.0",
+    "grunt-contrib-clean": "^0.5.0",
+    "grunt-contrib-connect": "^0.7.1",
+    "grunt-mocha-phantomjs": "^0.5.0"
   }
 }

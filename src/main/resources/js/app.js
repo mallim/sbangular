@@ -1,6 +1,7 @@
 'use strict';
+/*jshint -W069 */
 
-require("angular");
+var angular = require("angular");
 require("angular-route");
 require('angular-bootstrap');
 
@@ -112,7 +113,7 @@ app.controller('LoginCtrl', ['$scope', '$location', function($scope, $location)
         console.log("$scope.password=",$scope.password);
         $scope.$emit('event:loginRequest', $scope.username, $scope.password);
         // $location.path("/home");
-    }
+    };
 
 }]);
 

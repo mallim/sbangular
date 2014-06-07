@@ -1,7 +1,11 @@
 'use strict';
 
-module.exports = function (app) {
+module.exports.inject = function( app ) {
   app.service('Base64Service', Base64Service );
+};
+
+module.exports.makeService = function(){
+  return new Base64Service();
 };
 
 // Constructor

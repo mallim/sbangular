@@ -1,3 +1,6 @@
 'use strict';
 
-require("./security/TestBase64Service");
+require("angular-mocks");
+
+// require("./security/TestBase64Service");
+require("./security/TestAuthService");

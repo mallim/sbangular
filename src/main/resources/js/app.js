@@ -23,8 +23,7 @@ var app = angular.module('application', [ 'ngRoute','ui.bootstrap']);
 /**
  * Idea from http://ardeibert.com/modularizing-an-angularjs-app-with-browserify/
  */
-require("./security/Base64Service").inject(app);
-require("./AuthenticationService")(app);
+require("./security/AuthService")(app);
 
 app.config(['$routeProvider', '$locationProvider', function( $routeProvider, $locationProvider ){
 
@@ -69,25 +68,21 @@ app.controller('UserSettingsCtrl', ['$scope',function($scope){
     };
 }]);
 
-app.controller('NavCtrl', ['$scope', '$rootScope', "AuthenticationService", "$location", "$http", function( $scope, $rootScope, AuthenticationService, $location, $http )
+app.controller('NavCtrl', ['$scope', '$rootScope', "$location", "$http", 'AuthService', function( $scope, $rootScope, $location, $http, AuthService )
 {
 
   $scope.$on('event:loginConfirmed', function() {
-    $http.get('user/authenticated/retrieve').success(function (data) {
-      $scope.user = data;
-    });
+    // $http.get('user/authenticated/retrieve').success(function (data) {
+    //  $scope.user = data;
+    // });
+    $scope.user = $rootScope.user;
     console.log("Login confirmed, get user data from backend, user=", $scope.user );
     $location.path("/home");
   });
 
   $scope.logout = function () {
 
-    console.log("Starting to emit logoutRequest");
-    $scope.$emit('event:logoutRequest');
-    console.log("Finished logoutRequest event");
-
-    AuthenticationService.logout().then(function() {
-      $rootScope.user = null;
+    AuthService.logout( $scope ).then(function() {
       $scope.username = $scope.password = null;
       $scope.user = null;
       console.log("Inside logout then, redirect to /");
@@ -98,7 +93,7 @@ app.controller('NavCtrl', ['$scope', '$rootScope', "AuthenticationService", "$lo
 
 }]);
 
-app.controller('LoginCtrl', ['$scope', '$location', function($scope, $location)
+app.controller('LoginCtrl', ['$scope', 'AuthService', function( $scope, AuthService )
 {
 
     $scope.login = function(form) {
@@ -109,10 +104,10 @@ app.controller('LoginCtrl', ['$scope', '$location', function($scope, $location)
         // if (form.$invalid) {
             // return;
         // }
-        console.log("$scope.username=",$scope.username);
+
+        console.log("$scope.username??=",$scope.username);
         console.log("$scope.password=",$scope.password);
-        $scope.$emit('event:loginRequest', $scope.username, $scope.password);
-        // $location.path("/home");
+        AuthService.login( $scope, $scope.username, $scope.password );
     };
 
 }]);
@@ -120,22 +115,24 @@ app.controller('LoginCtrl', ['$scope', '$location', function($scope, $location)
 /**
  * This part will change the html's header title
  */
-app.run(['$location', '$rootScope', '$http', 'Base64Service', function( $location, $rootScope, $http, Base64Service ) {
+app.run(['$location', '$rootScope', '$http', function( $location, $rootScope, $http ) {
 
   /**
    * Holds all the requests which failed due to 401 response.
    */
   $rootScope.requests401 = [];
 
+  /**
   $rootScope.$on("$routeChangeStart", function() {
     // console.log("detected route change");
     $http.get('user/authenticated/retrieve').success(function (data) {
       $rootScope.user = data;
     });
   });
+  **/
 
   $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
-    if(  current.$$route )
+    if( current.$$route )
     {
       $rootScope.title = current.$$route.title;
     }
@@ -169,23 +166,6 @@ app.run(['$location', '$rootScope', '$http', 'Base64Service', function( $locatio
       retry(requests[i]);
     }
     $rootScope.requests401 = [];
-  });
-
-  /**
-   * On 'event:loginRequest' send credentials to the server.
-   */
-  $rootScope.$on('event:loginRequest', function (event, username, password) {
-
-    console.log("Inside loginRequest event, username=", username, ",password=", password );
-    // set the basic authentication header that will be parsed in the next request and used to authenticate
-    httpHeaders.common['Authorization'] = 'Basic ' + Base64Service.encode(username + ':' + password);
-
-    // console.log("Going to call user/authenticate" );
-    $http.post('user/authenticate').success(function() {
-      $rootScope.$broadcast('event:loginConfirmed');
-      delete $rootScope.error;
-    });
-
   });
 
   /**

@@ -18,9 +18,6 @@ module.exports = function(grunt) {
             ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
 
     browserify: {
-      options: {
-        watch:true
-      },
       dev: {
         files: browserifyFiles,
         bundleOptions: {
@@ -38,6 +35,7 @@ module.exports = function(grunt) {
           debug: true
         },
         options: {
+          watch:true,
           external: [ './src/main/resources/js/app.js' ]
         }
       },
@@ -62,6 +60,10 @@ module.exports = function(grunt) {
       }
     },
     watch: {
+      js: {
+        files: ['Gruntfile.js','src/main/resources/js/**/*.js'],
+        tasks: ['js']
+      },
       test: {
         files: ['Gruntfile.js','src/test/resources/**','src/main/resources/js/**/*.js'],
         tasks: ['test']
@@ -131,8 +133,14 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-phantomjs');
 
   grunt.registerTask('release', ['jshint','browserify:release','less:release']);
-  grunt.registerTask('dev', ['validate', 'less:dev', 'browserify:dev']);
-  grunt.registerTask('dev-no-validate', ['less:dev', 'browserify:dev']);
+
+  /**
+   * For manual browser test
+   */
+  grunt.registerTask('js', [
+    'jshint',
+    'browserify:dev'
+  ]);
 
   // Setup idea from https://blog.codecentric.de/en/2014/02/cross-platform-javascript/
   grunt.registerTask('test', [

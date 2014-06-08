@@ -8,6 +8,8 @@
 
 module.exports = function (app) {
 
+  require("./ResponseInterceptor")(app);
+
   app.service('AuthService', ["$http", "$rootScope", "$q", function( $http, $rootScope, $q ){
 
     var base64Service = require("./Base64Service");
@@ -29,7 +31,7 @@ module.exports = function (app) {
     // have access to the "this" reference.
     AuthService.login = function( $scope, username, password  ) {
 
-      console.log("Inside AuthService.login, username=", username, ",password=", password, ",httpHeaders", httpHeaders );
+      // console.log("Inside AuthService.login, username=", username, ",password=", password, ",httpHeaders", httpHeaders );
       $scope.$emit( 'event:loginRequest', username, password );
 
       // set the basic authentication header that will be parsed in the next request and used to authenticate

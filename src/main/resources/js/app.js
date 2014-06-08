@@ -24,14 +24,15 @@ var app = angular.module('application', [ 'ngRoute','ui.bootstrap']);
  * Idea from http://ardeibert.com/modularizing-an-angularjs-app-with-browserify/
  */
 require("./security/AuthService")(app);
-require("./security/ResponseInterceptor")(app);
+require("./signup/SignupCtrl")(app);
+require("./login/LoginCtrl")(app);
 
 app.config(['$routeProvider', '$locationProvider', function( $routeProvider, $locationProvider ){
 
     $routeProvider
         .when('/login',{
             title:'Login',
-            templateUrl:'login.tpl',
+            templateUrl:'login.html',
             controller:"LoginCtrl"
         })
         .when('/home',{
@@ -51,8 +52,8 @@ app.config(['$routeProvider', '$locationProvider', function( $routeProvider, $lo
         })
         .when('/signup',{
           title:'Sign Up',
-          templateUrl:'signup.tpl',
-          controller:null
+          templateUrl:'signup.html',
+          controller:'SignupCtrl'
         })
         .otherwise({
             redirectTo: '/login'
@@ -69,49 +70,17 @@ app.controller('UserSettingsCtrl', ['$scope',function($scope){
     };
 }]);
 
-app.controller('NavCtrl', ['$scope', "$location", 'AuthService', function( $scope, $location, AuthService )
+app.controller('NavCtrl', ['$scope', "$location", "$rootScope", 'AuthService', function( $scope, $location, $rootScope, AuthService )
 {
 
   $scope.logout = function () {
-
     AuthService.logout( $scope ).then(function() {
       $scope.username = $scope.password = null;
       $scope.user = null;
-      console.log("Inside logout then, redirect to /");
       $location.path("/");
     });
-
   };
 
-}]);
-
-app.controller('LoginCtrl', ['$scope', '$location', 'AuthService', function( $scope, $location, AuthService )
-{
-
-    $scope.login = function(form) {
-
-        // Trigger validation flag.
-        $scope.submitted = true;
-
-        // If form is invalid, return and let AngularJS show validation errors.
-        // if (form.$invalid) {
-            // return;
-        // }
-
-        console.log("$scope.username??=",$scope.username);
-        console.log("$scope.password=",$scope.password);
-        AuthService.login( $scope, $scope.username, $scope.password )
-         .then(function (result) {
-            $location.path("/home");
-         }, function (error) {
-            $scope.alerts.push({type:'danger', msg: 'Invalid credentials!'});
-            console.log(error);
-         });
-    },
-
-    $scope.closeAlert = function(index) {
-      $scope.alerts.splice( index, 1 );
-    };
 }]);
 
 /**

@@ -39,6 +39,17 @@ module.exports = function(grunt) {
           external: [ './src/main/resources/js/app.js' ]
         }
       },
+      e2e:{
+        src: [ 'src/main/resources/js/e2e-suite.js' ],
+        dest: './target/e2e-browserified_tests.js',
+        bundleOptions: {
+          debug: true
+        },
+        options: {
+          watch:true,
+          external: [ './src/main/resources/js/app.js' ]
+        }
+      },
       release: {
         files: browserifyFiles,
         options: { debug: false }
@@ -61,11 +72,15 @@ module.exports = function(grunt) {
     },
     watch: {
       js: {
-        files: ['Gruntfile.js','src/main/resources/js/**/*.js'],
+        files: ['Gruntfile.js','src/main/resources/js/**/*.js','src/main/resources/js/**/*.html'],
         tasks: ['js']
       },
+      e2e: {
+        files: ['Gruntfile.js','src/main/resources/js/**/*.js','src/main/resources/js/**/*.html'],
+        tasks: ['e2e']
+      },
       test: {
-        files: ['Gruntfile.js','src/test/resources/**','src/main/resources/js/**/*.js'],
+        files: ['Gruntfile.js','src/test/resources/**','src/main/resources/js/**/*.js','src/main/resources/js/**/*.html'],
         tasks: ['test']
       },
       css:{
@@ -80,6 +95,15 @@ module.exports = function(grunt) {
       }
     },
     copy: {
+      e2e: {
+        files: [
+          // includes files within path
+          {expand: true, flatten:true, src: ['src/main/resources/js/protractorConf.js'], dest: 'target/', filter: 'isFile'},
+
+          // includes files within path and its sub-directories
+          {expand: true, flatten:true, src: ['src/main/resources/static/js/bundle.js'], dest: 'target/'},
+        ]
+      },
       test: {
         files: [
           // includes files within path
@@ -120,6 +144,14 @@ module.exports = function(grunt) {
           ]
         }
       }
+    },
+    protractor: {
+      e2e: {
+        options: {
+          configFile: "target/protractorConf.js", // Target-specific config file
+          args: {} // Target-specific arguments
+        }
+      }
     }
   });
 
@@ -131,6 +163,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-mocha-phantomjs');
+  grunt.loadNpmTasks('grunt-protractor-runner');
 
   grunt.registerTask('release', ['jshint','browserify:release','less:release']);
 
@@ -140,6 +173,15 @@ module.exports = function(grunt) {
   grunt.registerTask('js', [
     'jshint',
     'browserify:dev'
+  ]);
+
+  grunt.registerTask('e2e', [
+    'clean:test',
+    'jshint',
+    'browserify:dev',
+    'browserify:e2e',
+    'copy:e2e',
+    'protractor:e2e'
   ]);
 
   // Setup idea from https://blog.codecentric.de/en/2014/02/cross-platform-javascript/

@@ -6,8 +6,6 @@ var sinonChai = require("sinon-chai");
 var expect = chai.expect;
 chai.use(sinonChai);
 
-var expect = chai.expect;
-
 var app = angular.module('AuthServiceMock',[]);
 require("./AuthService")(app);
 

@@ -5,6 +5,7 @@
   "author": "Ian lim",
   "browserify": {
     "transform": [
+      "html2js-browserify",
       "debowerify",
       "deamdify"
     ]
@@ -28,6 +29,12 @@
     "sinon": "^1.10.2",
     "mocha-sinon": "^1.1.3",
     "sinon-chai": "^2.5.0",
-    "store2": "^2.1.6"
+    "store2": "^2.1.6",
+    "html2js-browserify": "0.0.2",
+    "chai-as-promised": "^4.1.1",
+    "grunt-mocha-protractor": "^0.5.2",
+    "grunt-protractor-runner": "^1.0.0",
+    "protractor": "^0.24.0",
+    "astrolabe": "^0.3.4-alpha"
   }
 }

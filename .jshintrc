@@ -35,6 +35,11 @@
   },
   "predef": [
     "angular",
-    "inject"
+    "inject",
+    "browser",
+    "element",
+    "by",
+    "protractor",
+    "By"
   ]
 }

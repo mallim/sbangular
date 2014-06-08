@@ -24,6 +24,7 @@ var app = angular.module('application', [ 'ngRoute','ui.bootstrap']);
  * Idea from http://ardeibert.com/modularizing-an-angularjs-app-with-browserify/
  */
 require("./security/AuthService")(app);
+require("./security/ResponseInterceptor")(app);
 
 app.config(['$routeProvider', '$locationProvider', function( $routeProvider, $locationProvider ){
 
@@ -68,17 +69,8 @@ app.controller('UserSettingsCtrl', ['$scope',function($scope){
     };
 }]);
 
-app.controller('NavCtrl', ['$scope', '$rootScope', "$location", "$http", 'AuthService', function( $scope, $rootScope, $location, $http, AuthService )
+app.controller('NavCtrl', ['$scope', "$location", 'AuthService', function( $scope, $location, AuthService )
 {
-
-  $scope.$on('event:loginConfirmed', function() {
-    // $http.get('user/authenticated/retrieve').success(function (data) {
-    //  $scope.user = data;
-    // });
-    $scope.user = $rootScope.user;
-    console.log("Login confirmed, get user data from backend, user=", $scope.user );
-    $location.path("/home");
-  });
 
   $scope.logout = function () {
 
@@ -93,10 +85,11 @@ app.controller('NavCtrl', ['$scope', '$rootScope', "$location", "$http", 'AuthSe
 
 }]);
 
-app.controller('LoginCtrl', ['$scope', 'AuthService', function( $scope, AuthService )
+app.controller('LoginCtrl', ['$scope', '$location', 'AuthService', function( $scope, $location, AuthService )
 {
 
     $scope.login = function(form) {
+
         // Trigger validation flag.
         $scope.submitted = true;
 
@@ -107,9 +100,18 @@ app.controller('LoginCtrl', ['$scope', 'AuthService', function( $scope, AuthServ
 
         console.log("$scope.username??=",$scope.username);
         console.log("$scope.password=",$scope.password);
-        AuthService.login( $scope, $scope.username, $scope.password );
-    };
+        AuthService.login( $scope, $scope.username, $scope.password )
+         .then(function (result) {
+            $location.path("/home");
+         }, function (error) {
+            $scope.alerts.push({type:'danger', msg: 'Invalid credentials!'});
+            console.log(error);
+         });
+    },
 
+    $scope.closeAlert = function(index) {
+      $scope.alerts.splice( index, 1 );
+    };
 }]);
 
 /**
@@ -121,15 +123,6 @@ app.run(['$location', '$rootScope', '$http', function( $location, $rootScope, $h
    * Holds all the requests which failed due to 401 response.
    */
   $rootScope.requests401 = [];
-
-  /**
-  $rootScope.$on("$routeChangeStart", function() {
-    // console.log("detected route change");
-    $http.get('user/authenticated/retrieve').success(function (data) {
-      $rootScope.user = data;
-    });
-  });
-  **/
 
   $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
     if( current.$$route )
@@ -171,10 +164,12 @@ app.run(['$location', '$rootScope', '$http', function( $location, $rootScope, $h
   /**
    * On 'logoutRequest' invoke logout on the server.
    */
+  /**
   $rootScope.$on('event:logoutRequest', function () {
     httpHeaders.common['Authorization'] = null;
     originalLocation = "/login";
   });
+  **/
 
   httpHeaders = $http.defaults.headers;
 

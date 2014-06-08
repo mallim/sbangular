@@ -13,10 +13,15 @@ module.exports = function (app) {
     var base64Service = require("./Base64Service");
     var Base64Service = base64Service.makeService();
 
+    var store = require("store2");
+
     var httpHeaders = $http.defaults.headers;
 
     // Define the constructor function.
     function AuthService(){
+      if (store.session.has("userInfo")) {
+        $rootScope.userInfo = angular.toJson(store.session.get("userInfo"));
+      }
     }
 
     // Define the "class" / "static" methods. These are
@@ -33,44 +38,72 @@ module.exports = function (app) {
       var authenticateUrl = $http.post('user/authenticate');
       var retrieveUserUrl = $http.get('user/authenticated/retrieve');
 
+      var deferred = $q.defer();
+
       $q.all([authenticateUrl, retrieveUserUrl])
         .then(function(results) {
             // console.log("results[1] ", results[ 1 ] );
             if( results[ 1 ] )
             {
               $rootScope.user = results[ 1 ].data;
+              var userInfo = {
+                authorities: results[ 1 ].data.authorities,
+                userName: results[ 1 ].data.username
+              };
+              store.session.set( "userInfo", angular.toJson( userInfo ) );
+              $rootScope.userInfo = userInfo;
               // console.log("Got the user to be ", user );
               $rootScope.$broadcast('event:loginConfirmed');
               delete $rootScope.error;
             }
 
-            return results[1].data;
+            deferred.resolve(results[1].data);
+        },
+        function(error) {
+          deferred.reject(error);
         }
       );
+
+      return deferred.promise;
     };
 
     AuthService.isLoggedIn = function( user ) {
-      if( user === undefined ) user = $rootScope.user;
-      return user.authorities.length > 0;
+      if( $rootScope.userInfo === undefined && store.session.has("userInfo") )
+      {
+        $rootScope.userInfo = angular.toJson(store.session.get("userInfo"));
+      }
+      return $rootScope.userInfo.authorities.length > 0;
+    };
+
+    AuthService.getUserInfo = function() {
+      return $rootScope.userInfo;
     };
 
     AuthService.logout = function( $scope ) {
-      var d = $q.defer();
+      var deferred = $q.defer();
 
-      $http.get('j_spring_security_logout').success(function() {
-        $rootScope.user = null;
-        $scope.$emit('event:logoutRequest');
-        d.resolve();
-      });
+      $http.get('j_spring_security_logout')
+        .then(function() {
+          store.session.remove("userInfo");
+          $rootScope.user = null;
+          $rootScope.userInfo = null;
+          $scope.$emit('event:logoutRequest');
+          deferred.resolve();
+        },
+          function(error) {
+            deferred.reject(error);
+        }
+      );
 
-      return d.promise;
+      return deferred.promise;
     };
 
     // Return constructor - this is what defines the actual
     // injectable in the DI framework.
     return(AuthService);
 
-}]);};
+  }]);
+};
 
 
 

@@ -26,6 +26,7 @@ var app = angular.module('application', [ 'ngRoute','ui.bootstrap']);
 require("./security/AuthService")(app);
 require("./signup/SignupCtrl")(app);
 require("./login/LoginCtrl")(app);
+require("./home/HomeCtrl")(app);
 
 app.config(['$routeProvider', '$locationProvider', function( $routeProvider, $locationProvider ){
 
@@ -37,8 +38,8 @@ app.config(['$routeProvider', '$locationProvider', function( $routeProvider, $lo
         })
         .when('/home',{
             title:'Home',
-            templateUrl:'home.tpl',
-            controller:null
+            templateUrl:'home.html',
+            controller:"HomeCtrl"
         })
         .when('/userform',{
             title:'User Settings',

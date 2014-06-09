@@ -1,0 +1,14 @@
+<div class="row" style="margin-top:75px;">
+  <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+  <h2>Welcome!</h2>
+  <p>Congratulations, you have logged in successfully!  Now that you've logged in, you have the following options:</p>
+
+  <ul class="glassList">
+    <li>
+      <a href="userform">Edit Profile</a>
+    </li>
+    <li>
+      <a href="/appfuse-spring/fileupload">Upload A File</a>
+    </li>
+  </ul>
+</div>

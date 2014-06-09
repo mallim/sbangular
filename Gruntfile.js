@@ -79,6 +79,11 @@ module.exports = function(grunt) {
         files: ['Gruntfile.js','src/main/resources/js/**/*.js','src/main/resources/js/**/*.html'],
         tasks: ['e2e']
       },
+      mockup: {
+        options: { livereload: true },
+        files: ['Gruntfile.js','src/main/resources/js/**/*.js','src/main/resources/js/**/*.html'],
+        tasks: ['jshint','browserify:dev']
+      },
       test: {
         files: ['Gruntfile.js','src/test/resources/**','src/main/resources/js/**/*.js','src/main/resources/js/**/*.html'],
         tasks: ['test']
@@ -119,19 +124,18 @@ module.exports = function(grunt) {
     },
     connect: {
       // Used for mocha-phantomjs tests
-      server: {
+      test: {
         options: {
           base: 'target'
         }
       },
-
-      // you can use this manually by doing
-      // grunt connect:keepalive
-      // to start a server for the example pages (browser/example/*.html) or to
-      // run the tests manually in a browser
-      keepalive: {
+      mockup: {
         options: {
-          keepalive: true
+          base: 'src/main/resources/static',
+          livereload: true,
+          open: {
+            target: 'http://localhost:8000/#signup'
+          }
         }
       }
     },
@@ -175,6 +179,13 @@ module.exports = function(grunt) {
     'browserify:dev'
   ]);
 
+  // For doing mockup
+  grunt.registerTask('mockup', [
+    'connect:mockup',
+    'watch:mockup'
+  ]);
+
+  // Perform End to End test using Protractor
   grunt.registerTask('e2e', [
     'clean:test',
     'jshint',
@@ -191,7 +202,7 @@ module.exports = function(grunt) {
     'browserify:dev',
     'browserify:test',
     'copy:test',
-    'connect:server',
+    'connect:test',
     'mocha_phantomjs'
   ]);
 

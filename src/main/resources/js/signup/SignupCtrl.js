@@ -6,7 +6,8 @@ module.exports = function (app) {
     $templateCache.put('signup.html', require('./signup.html') );
   }]);
 
-  app.controller('SignupCtrl', ['$scope','$location', function( $scope, $location ){
+  app.controller('SignupCtrl', ['$scope','$location', '$rootScope', "messagesForHome",
+    function( $scope, $location, $rootScope, messagesForHome ){
 
     $scope.oneAtATime = true;
     $scope.status = {
@@ -24,9 +25,19 @@ module.exports = function (app) {
         console.log("Returning because form is invalid");
         return;
       }
-       console.log("Form inputs=", angular.toJson( $scope.user ) );
+
+      var user = {
+        username:$scope.username,
+        password:$scope.password,
+        passwordHint:$scope.passwordHint
+      };
+
+      console.log("Form inputs=", angular.toJson( user ) );
 
       // display You have successfully registered for access to this application. in /home
+      messagesForHome.registerSuccess = true;
+      $location.path("/home");
+
     };
 
     $scope.doCancel = function() {

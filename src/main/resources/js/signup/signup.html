@@ -7,31 +7,38 @@
     <form id="signupForm" name="signupForm" class="well" autocomplete="off" role="form" novalidate>
     <div class="form-group">
       <label for="username" class="control-label">Username <span class="required">*</span></label>
+      <span class="label label-danger" data-ng-show="submitted && signupForm.username.$error.required">User name is required</span>
       <input id="username" data-ng-model="username" name="username"
               class="form-control" autofocus="true" type="text" value=""
-              require="required"
+              required
           />
       </div>
       <div class="row">
         <div class="col-sm-6 form-group">
-          <label for="password" class="control-label">Password</label>
-          <input id="password" name="password" data-ng-model="password" class="form-control" type="password" value=""></div>
+          <label for="password" class="control-label">Password <span class="required">*</span></label>
+          <span class="label label-danger" data-ng-show="submitted && signupForm.password.$error.required">Password is required</span>
+          <input id="password" name="password" data-ng-model="password" class="form-control" type="password" value="" required></div>
         <div class="col-sm-6 form-group">
           <label for="passwordHint" class="control-label">Password Hint <span class="required">*</span></label>
-          <input id="passwordHint" data-ng-model="passwordHint" name="passwordHint" class="form-control" type="text" value=""></div>
+          <span class="label label-danger" data-ng-show="submitted && signupForm.passwordHint.$error.required">Password Hint is required</span>
+          <input id="passwordHint" data-ng-model="passwordHint" name="passwordHint" class="form-control" type="text" value="" required></div>
       </div>
       <div class="row">
         <div class="col-sm-6 form-group">
           <label for="firstName" class="control-label">First Name <span class="required">*</span></label>
-          <input id="firstName" data-ng-model="firstName" name="firstName" class="form-control" type="text" value="" maxlength="50"></div>
+          <span class="label label-danger" data-ng-show="submitted && signupForm.firstName.$error.required">Your First Name is required</span>
+          <input id="firstName" data-ng-model="firstName" name="firstName" class="form-control" type="text" value="" maxlength="50" required></div>
         <div class="col-sm-6 form-group">
           <label for="lastName" class="control-label">Last Name <span class="required">*</span></label>
-          <input id="lastName" data-ng-model="lastName" name="lastName" class="form-control" type="text" value="" maxlength="50"></div>
+          <span class="label label-danger" data-ng-show="submitted && signupForm.lastName.$error.required">Your Last Name is required</span>
+          <input id="lastName" data-ng-model="lastName" name="lastName" class="form-control" type="text" value="" maxlength="50" required></div>
       </div>
       <div class="row">
         <div class="col-sm-6 form-group">
           <label for="email" class="control-label">E-Mail <span class="required">*</span></label>
-          <input id="email" data-ng-model="email" name="email" class="form-control" type="text" value="">
+          <span class="label label-danger" data-ng-show="submitted && signupForm.email.$error.required">Email Address is required</span>
+          <span class="label label-danger" data-ng-show="submitted && signupForm.email.$error.email">Email Address is invalid</span>
+          <input id="email" data-ng-model="email" name="email" class="form-control" type="email" value="" required>
         </div>
         <div class="col-sm-6 form-group">
           <label for="phoneNumber" class="control-label">Phone Number</label>

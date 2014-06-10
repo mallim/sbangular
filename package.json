@@ -35,6 +35,7 @@
     "grunt-mocha-protractor": "^0.5.2",
     "grunt-protractor-runner": "^1.0.0",
     "protractor": "^0.24.0",
-    "astrolabe": "^0.3.4-alpha"
+    "astrolabe": "^0.3.4-alpha",
+    "grunt-cli": "^0.1.13"
   }
 }

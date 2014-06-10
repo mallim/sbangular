@@ -2,6 +2,8 @@ language: java
 jdk:
   - oraclejdk8
 before_script:
-  - npm install
+  - npm install -g grunt-cli
+  - npm install -g bower
+  - bower install
 script:
   - grunt test

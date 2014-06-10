@@ -196,7 +196,7 @@ module.exports = function(grunt) {
   ]);
 
   // Setup idea from https://blog.codecentric.de/en/2014/02/cross-platform-javascript/
-  grunt.registerTask('test', [
+  grunt.registerTask('unit-test', [
     'clean:test',
     'jshint',
     'browserify:dev',
@@ -205,5 +205,11 @@ module.exports = function(grunt) {
     'connect:test',
     'mocha_phantomjs'
   ]);
+
+  // To be use by travis-CI
+  grunt.registerTask('test', [
+    'unit-test'
+  ]);
+
 
 };

@@ -7,12 +7,18 @@ before_install:
 install:
   - npm install
   - bower install
+  - webdriver-manager update
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
-  - ./node_modules/protractor/bin/install_selenium_standalone
-  - java -jar selenium/selenium-server-standalone-2.35.0.jar -Dwebdriver.chrome.driver=./selenium/chromedriver &
-  - sleep 3
+  - wget http://selenium.googlecode.com/files/selenium-server-standalone-2.42.0.jar
+  - wget http://chromedriver.storage.googleapis.com/2.10/chromedriver_linux32.zip && unzip chromedriver_linux32.zip && sudo mv chromedriver /usr/bin
+  - java -jar ./node-modules/protractor/selenium/selenium-server-standalone-2.42.0.jar -Dwebdriver.chrome.driver=./selenium/chromedriver &
+  - java -jar selenium-server-standalone-2.31.0.jar > /dev/null &
+  - sleep 5
 script:
   - grunt unit-test
+  - gradle build
+  - java -jar ./build/libs/sbangular.jar &
+  - sleep 10
   - grunt e2e

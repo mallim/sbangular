@@ -22,6 +22,7 @@ script:
   - grunt unit-test
   - gradle build
   - cd build/libs
+  - chmod a+x sbangular.jar
   - "nohup java -jar sbangular.jar > ../../sbangular.log &"
   - sleep 30
   - cd ../../

@@ -5,6 +5,7 @@ before_install:
   - npm install -g grunt-cli
   - npm install -g bower
   - npm install -g protractor
+  - npm install -g mocha
 install:
   - npm install
   - bower install

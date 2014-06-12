@@ -27,7 +27,7 @@ script:
   - cd ../../
   - nohup webdriver-manager start > webdriver-manager.log &
   - sleep 5
-  - grunt e2e
+  - grunt --verbose e2e
 after_script: 
   # Print logs and outputs for debugging.
   - cat webdriver-manager.log

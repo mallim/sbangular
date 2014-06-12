@@ -12,14 +12,20 @@ before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - "wget http://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar"
-  - "wget http://chromedriver.storage.googleapis.com/2.10/chromedriver_linux32.zip && unzip chromedriver_linux32.zip && sudo mv chromedriver /usr/bin"
-  - java -jar selenium-server-standalone-2.42.2.jar > /dev/null 2>&1 &
+  - wget http://chromedriver.storage.googleapis.com/2.10/chromedriver_linux32.zip 
+  - unzip chromedriver_linux32.zip 
+  - sudo mv chromedriver /usr/bin"
+  - nohup java -jar selenium-server-standalone-2.42.2.jar -browserSessionReuse -debug -Dwebdriver.chrome.driver=/usr/bin/chromedriver > selenium-output.log &
   - sleep 5
 script:
   - grunt unit-test
   - gradle build
   - cd build/libs
-  - java -jar sbangular.jar > /dev/null 2>&1 &
+  - nohup java -jar sbangular.jar > sbangular.log &
   - sleep 10
   - cd ../../
   - grunt e2e
+after_script: 
+  # Print logs and outputs for debugging.
+  - cat selenium-output.log
+  - cat sbangular.log

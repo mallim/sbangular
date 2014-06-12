@@ -12,7 +12,7 @@ install:
 before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
-  - "wget http://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar"
+  # "wget http://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar"
   # wget http://chromedriver.storage.googleapis.com/2.10/chromedriver_linux32.zip 
   # unzip chromedriver_linux32.zip 
   # sudo mv chromedriver /usr/bin"

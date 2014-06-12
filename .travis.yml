@@ -26,11 +26,11 @@ script:
   - "nohup java -jar sbangular.jar > ../../sbangular.log &"
   - sleep 30
   - cd ../../
-  # "nohup webdriver-manager start > webdriver-manager.log &"
+  # "nohup webdriver-manager start --standalone > webdriver-manager.log &"
   # sleep 5
   - cat sbangular.log
   - cat webdriver-manager.log
-  - grunt e2e
+  - ./node_modules/.bin/protractor target/protractorConf.js
 after_script: 
   # Print logs and outputs for debugging.
   - cat webdriver-manager.log

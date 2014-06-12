@@ -2,7 +2,6 @@
   "asi": false,
   "bitwise": true,
   "boss": true,
-  "camelcase": true,
   "eqnull": true,
   "evil": true,
   "expr": true,

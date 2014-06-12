@@ -23,10 +23,12 @@ script:
   - gradle build
   - cd build/libs
   - "nohup java -jar sbangular.jar > ../../sbangular.log &"
-  - sleep 20
+  - sleep 30
   - cd ../../
   # "nohup webdriver-manager start > webdriver-manager.log &"
   # sleep 5
+  - cat sbangular.log
+  - cat webdriver-manager.log
   - grunt e2e
 after_script: 
   # Print logs and outputs for debugging.

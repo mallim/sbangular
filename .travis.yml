@@ -22,10 +22,10 @@ script:
   - grunt unit-test
   - gradle build
   - cd build/libs
-  - nohup java -jar sbangular.jar > ../../sbangular.log &
+  - "nohup java -jar sbangular.jar > ../../sbangular.log &"
   - sleep 20
   - cd ../../
-  - nohup webdriver-manager start > webdriver-manager.log &
+  - "nohup webdriver-manager start > webdriver-manager.log &"
   - sleep 5
   - grunt --verbose e2e
 after_script: 

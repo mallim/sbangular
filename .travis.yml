@@ -17,8 +17,6 @@ before_script:
   # sudo mv chromedriver /usr/bin"
   # - ./node_modules/protractor/bin/install_selenium_standalone
   # nohup java -jar selenium-server-standalone-2.42.2.jar -browserSessionReuse -debug -Dwebdriver.chrome.driver=./selenium/chromedriver > selenium-output.log &
-  - nohup webdriver-manager start > webdriver-manager.log &
-  - sleep 5
 script:
   - grunt unit-test
   - gradle build
@@ -26,6 +24,8 @@ script:
   - nohup java -jar sbangular.jar > sbangular.log &
   - sleep 10
   - cd ../../
+  - nohup webdriver-manager start > webdriver-manager.log &
+  - sleep 5
   - grunt e2e
 after_script: 
   # Print logs and outputs for debugging.

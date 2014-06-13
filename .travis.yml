@@ -19,6 +19,8 @@ before_script:
   # sudo mv chromedriver /usr/bin"
   # - ./node_modules/protractor/bin/install_selenium_standalone
   # nohup java -jar selenium-server-standalone-2.42.2.jar -browserSessionReuse -debug -Dwebdriver.chrome.driver=./selenium/chromedriver > selenium-output.log &
+  - curl -L http://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar > selenium.jar
+  - sudo ln -s /usr/lib/firefox/firefox /usr/lib/firefox/firefox-bin
 script:
   - grunt unit-test
   - gradle build
@@ -27,12 +29,12 @@ script:
   - "nohup java -jar sbangular.jar > ../../sbangular.log &"
   - sleep 30
   - cd ../../
-  # "nohup webdriver-manager start --standalone > webdriver-manager.log &"
-  # sleep 5
+  - PATH=$PATH:/usr/lib/firefox java -jar selenium.jar > /dev/null 2> selenium_output.log &
+  # sleep 10
   - cat sbangular.log
-  - cat webdriver-manager.log
+  - cat selenium_output.log
   - grunt e2e
 after_script: 
   # Print logs and outputs for debugging.
-  - cat webdriver-manager.log
+  - cat selenium_output.log
   - cat sbangular.log

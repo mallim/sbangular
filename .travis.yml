@@ -24,7 +24,7 @@ script:
   - sleep 30
   - cd ../../
   - PATH=$PATH:/usr/lib/firefox java -jar selenium.jar > /dev/null 2> selenium_output.log &
-  sleep 10
+  - sleep 10
   - grunt e2e
 after_script: 
   # Print logs and outputs for debugging.

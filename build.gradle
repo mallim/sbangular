@@ -4,7 +4,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.0.M1")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.1.RELEASE")
     }
 }
 
@@ -28,12 +28,23 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web") {
         exclude module: "spring-boot-starter-tomcat"
     }
-    compile("org.springframework.boot:spring-boot-starter-jetty")
+
+    // SPRING
     // compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.boot:spring-boot-starter-jdbc")
+
+    // JETTY - Use Jetty instead
+    compile 'org.eclipse.jetty:jetty-webapp:9.+'
+    compile 'org.eclipse.jetty:jetty-jsp:9.+'
+
+    // LIQUIBASE
+    compile("org.liquibase:liquibase-core:3.2.0")
+
+    // HSQLDB
+    runtime("org.hsqldb:hsqldb:2.3.2")
 
     compile("org.apache.commons:commons-lang3:3.3.2")
-
     runtime("ch.qos.logback:logback-classic")
     runtime("org.slf4j:jul-to-slf4j")
 

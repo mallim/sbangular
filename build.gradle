@@ -30,9 +30,8 @@ dependencies {
     }
 
     // SPRING
-    // compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("org.springframework.boot:spring-boot-starter-security")
-    compile("org.springframework.boot:spring-boot-starter-jdbc")
 
     // JETTY - Use Jetty instead
     compile 'org.eclipse.jetty:jetty-webapp:9.+'

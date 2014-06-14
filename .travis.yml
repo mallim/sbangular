@@ -13,26 +13,18 @@ install:
 before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
-  # "wget http://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar"
-  # wget http://chromedriver.storage.googleapis.com/2.10/chromedriver_linux32.zip 
-  # unzip chromedriver_linux32.zip 
-  # sudo mv chromedriver /usr/bin"
-  # - ./node_modules/protractor/bin/install_selenium_standalone
-  # nohup java -jar selenium-server-standalone-2.42.2.jar -browserSessionReuse -debug -Dwebdriver.chrome.driver=./selenium/chromedriver > selenium-output.log &
   - curl -L http://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar > selenium.jar
   - sudo ln -s /usr/lib/firefox/firefox /usr/lib/firefox/firefox-bin
 script:
   - grunt unit-test
-  - gradle build
+  - gradle build -x test
   - cd build/libs
   - chmod a+x sbangular.jar
   - "nohup java -jar sbangular.jar > ../../sbangular.log &"
   - sleep 30
   - cd ../../
   - PATH=$PATH:/usr/lib/firefox java -jar selenium.jar > /dev/null 2> selenium_output.log &
-  # sleep 10
-  - cat sbangular.log
-  - cat selenium_output.log
+  sleep 10
   - grunt e2e
 after_script: 
   # Print logs and outputs for debugging.

@@ -4,6 +4,7 @@ sbangular
 > Run e2e angular tests with webdriver.
 
 [![Build Status](https://travis-ci.org/mallim/sbangular.svg?branch=master)](https://travis-ci.org/mallim/sbangular)
+[![Dependencies](https://david-dm.org/mallim/sbangular.png)](https://david-dm.org/mallim/sbangular)
 
 ## Libraries Demonstrated
 

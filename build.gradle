@@ -1,20 +1,20 @@
 buildscript {
     repositories {
         maven { url "http://repo.spring.io/libs-milestone" }
+        mavenCentral()
         mavenLocal()
     }
     dependencies {
+        // SPRING BOOT
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.1.RELEASE")
 
         // JREBEL
         classpath group: 'org.zeroturnaround', name: 'gradle-jrebel-plugin', version: '1.1.2'
-    }
-}
 
-// liquibase configuration
-// Based on the idea from http://stackoverflow.com/questions/22226175/liquibase-3-0-1-gradle-integration
-configurations {
-    liquibase
+        // FLYWAY
+        classpath 'org.flywaydb:flyway-gradle-plugin:3.0'
+        classpath 'org.xerial:sqlite-jdbc:3+'
+    }
 }
 
 apply plugin: 'groovy'
@@ -22,6 +22,7 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 
 apply plugin: 'spring-boot'
+apply plugin: 'flyway'
 
 /**
  * Execute bootRun -Pdevelopment to active jrebel
@@ -37,18 +38,16 @@ jar {
     version =  ''
 }
 
+flyway {
+    url='jdbc:sqlite:target/sbangular.db'
+}
+
 repositories {
     mavenCentral()
     maven { url "http://repo.spring.io/libs-milestone" }
 }
 
 dependencies {
-
-    // LIQUIBASE
-    /**
-    liquibase '<jdbc-driver>'
-    liquibase 'org.liquibase:liquibase-core:3.2.0'
-    **/
 
     compile("org.springframework.boot:spring-boot-starter-web") {
         exclude module: "spring-boot-starter-tomcat"
@@ -61,9 +60,6 @@ dependencies {
     // JETTY - Use Jetty instead
     compile 'org.eclipse.jetty:jetty-webapp:9.+'
     compile 'org.eclipse.jetty:jetty-jsp:9.+'
-
-    // HSQLDB
-    runtime("org.hsqldb:hsqldb:2.3.2")
 
     compile("org.apache.commons:commons-lang3:3.3.2")
     runtime("ch.qos.logback:logback-classic")

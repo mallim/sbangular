@@ -17,6 +17,7 @@ before_script:
   - sudo ln -s /usr/lib/firefox/firefox /usr/lib/firefox/firefox-bin
 script:
   - grunt unit-test
+  - gradle flywayMigrate
   - gradle build -x test
   - cd build/libs
   - chmod a+x sbangular.jar

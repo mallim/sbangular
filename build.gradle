@@ -65,6 +65,9 @@ dependencies {
     runtime("ch.qos.logback:logback-classic")
     runtime("org.slf4j:jul-to-slf4j")
 
+    // Sqlite JDBC Driver
+    runtime("org.xerial:sqlite-jdbc:3+")
+
     testCompile("org.codehaus.groovy:groovy-all:2.2.0")
     testCompile("org.spockframework:spock-core:0.7-groovy-2.0")
     testCompile('org.spockframework:spock-spring:0.7-groovy-2.0')

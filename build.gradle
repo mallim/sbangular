@@ -5,18 +5,27 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.1.RELEASE")
+
+        // JREBEL
+        classpath group: 'org.zeroturnaround', name: 'gradle-jrebel-plugin', version: '1.1.2'
     }
 }
 
 apply plugin: 'groovy'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
+
 apply plugin: 'spring-boot'
+applicationDefaultJvmArgs = ["-javaagent:${env.JREBEL_HOME}/jrebel.jar"]
+
+apply plugin: 'rebel'
 
 jar {
     baseName = 'sbangular'
     version =  ''
 }
+
+bootRun.dependsOn(generateRebel)
 
 repositories {
     mavenCentral()

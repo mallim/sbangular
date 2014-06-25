@@ -11,21 +11,31 @@ buildscript {
     }
 }
 
+// liquibase configuration
+// Based on the idea from http://stackoverflow.com/questions/22226175/liquibase-3-0-1-gradle-integration
+configurations {
+    liquibase
+}
+
 apply plugin: 'groovy'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
 apply plugin: 'spring-boot'
-applicationDefaultJvmArgs = ["-javaagent:${env.JREBEL_HOME}/jrebel.jar"]
 
-apply plugin: 'rebel'
+/**
+ * Execute bootRun -Pdevelopment to active jrebel
+ */
+if (hasProperty('development')) {
+    apply plugin: 'rebel'
+    bootRun.dependsOn generateRebel
+    applicationDefaultJvmArgs = ["-javaagent:${System.env.JREBEL_HOME}/jrebel.jar"]
+}
 
 jar {
     baseName = 'sbangular'
     version =  ''
 }
-
-bootRun.dependsOn(generateRebel)
 
 repositories {
     mavenCentral()
@@ -33,6 +43,12 @@ repositories {
 }
 
 dependencies {
+
+    // LIQUIBASE
+    /**
+    liquibase '<jdbc-driver>'
+    liquibase 'org.liquibase:liquibase-core:3.2.0'
+    **/
 
     compile("org.springframework.boot:spring-boot-starter-web") {
         exclude module: "spring-boot-starter-tomcat"
@@ -45,9 +61,6 @@ dependencies {
     // JETTY - Use Jetty instead
     compile 'org.eclipse.jetty:jetty-webapp:9.+'
     compile 'org.eclipse.jetty:jetty-jsp:9.+'
-
-    // LIQUIBASE
-    compile("org.liquibase:liquibase-core:3.2.0")
 
     // HSQLDB
     runtime("org.hsqldb:hsqldb:2.3.2")

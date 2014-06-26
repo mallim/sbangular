@@ -68,14 +68,22 @@ dependencies {
     // Sqlite JDBC Driver
     runtime("org.xerial:sqlite-jdbc:3+")
 
+    // Got this from https://github.com/mkuthan/example-spring-boot
+    testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile("org.codehaus.groovy:groovy-all:2.2.0")
     testCompile("org.spockframework:spock-core:0.7-groovy-2.0")
     testCompile('org.spockframework:spock-spring:0.7-groovy-2.0')
-    testCompile( 'org.springframework:spring-test:3.2.5.RELEASE')
 }
 
 task wrapper(type: Wrapper) {
     gradleVersion = '1.12'
+}
+
+test {
+    useJUnit {
+        includeCategories 'org.sbangular.MustRunFirst'
+        includeCategories 'org.sbangular.RepositoryTestCategory'
+    }
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8

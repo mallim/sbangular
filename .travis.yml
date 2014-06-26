@@ -18,7 +18,7 @@ before_script:
 script:
   - grunt unit-test
   - gradle flywayMigrate
-  - gradle build -x test
+  - gradle build
   - cd build/libs
   - chmod a+x sbangular.jar
   - "nohup java -jar sbangular.jar > ../../sbangular.log &"

@@ -20,7 +20,7 @@ sbangular
   * [jQuery](http://jquery.com/)
   * [JSHint](http://www.jshint.com/)
   * [LESS](http://lesscss.org/) w/ [LESS Hat](http://lesshat.com/)  
-  * [Mocha](http://visionmedia.github.io/mocha/) w/ [Chai](http://chaijs.com/)
+  * [Mocha](http://mochajs.org/) w/ [Chai](http://chaijs.com/)
   * [Protractor](https://github.com/angular/protractor)
   * [Spring Boot](http://projects.spring.io/spring-boot/)
   * [Spring Security](http://projects.spring.io/spring-security/)
